@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-# Vendor files
+# Call the proprietary setup
 $(call inherit-product-if-exists, vendor/huawei/angler/angler-vendor.mk)
 
 # Ramdisk
@@ -27,28 +27,46 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,device/huawei/angler/prebuilt/system,system)
 
 # Dalvik/HWUI
-$(call inherit-product, frameworks/native/build/phone-xxxhdpi-3072-dalvik-heap.mk)
-$(call inherit-product-if-exists, frameworks/native/build/phone-xxxhdpi-3072-hwui-memory.mk)
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapstartsize=8m \
+    dalvik.vm.heapgrowthlimit=256m \
+    dalvik.vm.heapsize=512m \
+    dalvik.vm.heaptargetutilization=0.75 \
+    dalvik.vm.heapminfree=2m \
+    dalvik.vm.heapmaxfree=8m
 
-# copy wlan firmware
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.hwui.texture_cache_size=88 \
+    ro.hwui.layer_cache_size=58 \
+    ro.hwui.path_cache_size=32 \
+    ro.hwui.shape_cache_size=4 \
+    ro.hwui.gradient_cache_size=2 \
+    ro.hwui.drop_shadow_cache_size=8 \
+    ro.hwui.r_buffer_cache_size=8 \
+    ro.hwui.text_small_cache_width=2048 \
+    ro.hwui.text_small_cache_height=2048 \
+    ro.hwui.text_large_cache_width=4096 \
+    ro.hwui.text_large_cache_height=4096
+
+# BCM4358 wlan firmware
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4358/device-bcm.mk)
 
-# CodeAurora msm8916_64 Tree
-include device/qcom/msm8994/msm8994.mk
-
-# Overlay
+# Overlays
 DEVICE_PACKAGE_OVERLAYS += device/huawei/angler/overlay
 PRODUCT_PACKAGE_OVERLAYS += device/huawei/angler/overlay
+
+# Device uses high-density artwork where available
+PRODUCT_AAPT_CONFIG += xxxhdpi
+PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
 
 # CAF Branch
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.par.branch=LA.BF64.1.2.2-06140-8x94.0
 
-# Device uses high-density artwork where available
-PRODUCT_AAPT_CONFIG := normal
-PRODUCT_AAPT_PREF_CONFIG := xxxhdpi xxhdpi xhdpi hdpi
+# CodeAurora MSM8994 Device Tree
+$(call inherit-product, device/qcom/msm8994/msm8994.mk)
 
-# Haters gonna hate ...
+# Haters gonna hate ..
 PRODUCT_CHARACTERISTICS := nosdcard
 
 # OEM customization
@@ -63,19 +81,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dex2oat-threads=2 \
     dalvik.vm.image-dex2oat-threads=4
 
-# GPS
-PRODUCT_PACKAGES += \
-    gps.msm8994
-
-# Keystore
-PRODUCT_PACKAGES += \
-    keystore.msm8994 \
-    keystore.qcom
-
-# Lights
-PRODUCT_PACKAGES += \
-    lights.msm8994
-
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.camera.cpp.duplication=false
@@ -88,6 +93,10 @@ PRODUCT_PACKAGES += \
     NfcNci \
     Tag
 
+# USB
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp
+
 # Power HAL
 PRODUCT_PACKAGES += \
     power.angler
@@ -95,3 +104,6 @@ PRODUCT_PACKAGES += \
 # FRP
 PRODUCT_PROPERTY_OVERRIDES += \
    ro.frp.pst=/dev/block/platform/soc.0/f9824900.sdhci/by-name/frp
+
+# Call the proprietary setup
+$(call inherit-product-if-exists, vendor/huawei/angler/angler-vendor.mk)
