@@ -24,12 +24,18 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
-PRODUCT_NAME := aosp_angler
+PRODUCT_NAME := full_angler
 PRODUCT_DEVICE := angler
-PRODUCT_BRAND := Android
-PRODUCT_MODEL := AOSP on angler
+PRODUCT_BRAND := google
+PRODUCT_MODEL := Nexus 6P
+TARGET_VENDOR := huawei
 PRODUCT_MANUFACTURER := Huawei
 PRODUCT_RESTRICT_VENDOR_FILES := false
+
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=angler \
+    BUILD_FINGERPRINT=google/angler/angler:6.0.1/MTC19X/2960136:user/release-keys \
+    PRIVATE_BUILD_DESC="angler-user 6.0.1 MTC19X 2960136 release-keys"
 
 $(call inherit-product, device/huawei/angler/device.mk)
 $(call inherit-product-if-exists, vendor/huawei/angler/device-vendor.mk)
