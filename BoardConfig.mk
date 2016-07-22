@@ -24,6 +24,10 @@ include device/qcom/common/BoardConfigCommon.mk
 # CPUSets
 ENABLE_CPUSETS := true
 
+# Include path
+TARGET_SPECIFIC_HEADER_PATH := device/huawei/angler/include
+
+
 # Platform
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
