@@ -51,6 +51,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # BCM4358 wlan firmware
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4358/device-bcm.mk)
 
+# Bootanimation
+# TODO: Add 1440 x 2560
+PRODUCT_COPY_FILES += \
+    vendor/aosparadox/bootanimation/1080p_PNG_bootanimation.zip:system/media/bootanimation.zip
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += device/huawei/angler/overlay
 PRODUCT_PACKAGE_OVERLAYS += device/huawei/angler/overlay
